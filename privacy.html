@@ -82,7 +82,9 @@
 
         <h2>6. Retention and deletion</h2>
         <p>Data is kept as long as C Systems needs it for its bookkeeping and records. Backups are rotated on a fixed schedule, and older backups are deleted automatically. When a user’s access ends, their account is disabled and their sessions are ended.</p>
-        <p>If the App is disconnected from QuickBooks, either in the App or from QuickBooks, its access tokens are revoked and removed from C Systems’ server. C Systems’ accounting records stay in QuickBooks, including records the App created there.</p>
+        <p><strong>Disconnecting QuickBooks.</strong> The App’s Owner can disconnect QuickBooks in the App. The App then stops using QuickBooks at once: its access token and any pending QuickBooks authorization are deleted immediately, and its refresh token is revoked with Intuit and then deleted from C Systems’ server by the App’s next sync run.</p>
+        <p>If the App is disconnected from within QuickBooks, Intuit ends the App’s access at that moment and the stored token no longer works. The Owner then deletes the stored tokens and any pending authorization from C Systems’ server in the App.</p>
+        <p>Each disconnect is recorded in the App’s audit log. Disconnecting does not delete anything in QuickBooks: C Systems’ accounting records stay there, including records the App created. Other data in the App is kept as described above.</p>
 
         <h2>7. Security contact</h2>
         <p>To report a security concern or ask about this policy, e-mail <a href="mailto:support@cwcx.com">support@cwcx.com</a>.</p>
