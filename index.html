@@ -112,6 +112,8 @@
     font-size: 13px;
     color: var(--faint);
   }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover, footer a:focus-visible { color: var(--fg); outline: none; }
   @media (max-width: 480px) {
     .wrap { padding: 0 24px; }
     header { padding-top: 24px; }
@@ -123,7 +125,7 @@
 <body>
   <header>
     <div class="wrap">
-      <a class="brand" href="/" aria-label="C Systems">
+      <a class="brand" href="./" aria-label="C Systems">
         <span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M9.2 3.1A4 4 0 1 0 9.2 8.9" fill="none" stroke="#0a0a0b" stroke-width="1.8" stroke-linecap="round"/></svg></span>
         C Systems
       </a>
@@ -145,7 +147,7 @@
   </main>
 
   <footer>
-    <div class="wrap">© 2026 C Systems USA LLC</div>
+    <div class="wrap">© 2026 C Systems USA LLC · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a></div>
   </footer>
 </body>
 </html>
