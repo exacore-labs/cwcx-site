@@ -7,6 +7,9 @@ Each page is a static, noindex page that sends the browser to the PRIVATE Atlas 
 - location.replace() is used, so the forwarder entry (and, for the OAuth callback, the code in its URL) does not stay in history.
 - The callback page appends location.search unchanged (code, state, realmId, error) to its fixed target. Validation stays in
   the app (/qbo/callback: single-use hashed state, 10-minute expiry).
+- The Plaid OAuth page (finance/plaid/oauth/ = the redirect_uri registered in the Plaid Dashboard) appends location.search
+  (?oauth_state_id=…) unchanged to its fixed target. The app's stub accepts only a well-formed oauth_state_id and re-opens
+  Plaid Link on the Owner's Settings → Bank connections page; the state id alone grants nothing.
 - No analytics, no third-party scripts, no external requests. A meta CSP allows only this page's own inline script and style
   (by sha256), the favicon, and nothing else. Referrer is suppressed.
 """
@@ -23,7 +26,14 @@ PAGES = [
     ("finance/connect/index.html", f"{APP}/quickbooks?tab=connection", False, "Opening the QuickBooks connection", "Continue to the QuickBooks connection page"),
     ("finance/disconnect/index.html", f"{APP}/qbo/disconnected", False, "QuickBooks disconnected", "Continue to Atlas Finance"),
     ("finance/qbo/callback/index.html", f"{APP}/qbo/callback", True, "Finishing the QuickBooks connection", "Continue to Atlas Finance"),
+    ("finance/plaid/oauth/index.html", f"{APP}/settings/bank-connections/oauth", True, "Finishing the bank connection", "Continue to Atlas Finance"),
 ]
+
+# noscript help for pages that carry a query string (the OAuth hand-offs)
+QUERY_HELP = {
+    "finance/qbo/callback/index.html": "Turn on JavaScript and reload this page to pass the QuickBooks authorisation on to Atlas Finance; then start Connect again in the app if it has expired.",
+    "finance/plaid/oauth/index.html": "Turn on JavaScript and reload this page to return to Atlas Finance and finish connecting your bank; if it has expired, connect again on Settings → Bank connections.",
+}
 
 STYLE = """*{box-sizing:border-box;margin:0;padding:0}
 body{background:#0a0a0b;color:#ededef;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;line-height:1.5}
@@ -49,11 +59,7 @@ def page(path: str, target: str, keep_query: bool, heading: str, noscript: str) 
     dest = "T+location.search" if keep_query else "T"
     script = f'(function(){{var T="{target}";location.replace({dest});}})();'
     csp = f"default-src 'none'; script-src '{sha(script)}'; style-src '{sha(STYLE)}'; img-src 'self'; base-uri 'none'; form-action 'none'"
-    extra = (
-        "<p>Turn on JavaScript and reload this page to pass the QuickBooks authorisation on to Atlas Finance; "
-        "then start Connect again in the app if it has expired.</p>"
-        if keep_query else ""
-    )
+    extra = f"<p>{esc(QUERY_HELP[path])}</p>" if keep_query else ""
     return f"""<!doctype html>
 <html lang="en">
 <head>
