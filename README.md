@@ -12,7 +12,7 @@ This is the public website for **C Systems USA LLC** (DBA "C Systems"). It is a 
   after the DNS change (see **Switching on cwcx.com**). Until then `main` has no `CNAME` and serves on github.io only.
 - History: the `cwcx.com` custom domain was removed on 2026-10-26 because cwcx.com's DNS still points to
   GoDaddy parking, so the github.io URLs redirected to a dead page. See **Switching on cwcx.com** below.
-- Source of truth on atlas2: `/home/atlas/ATLAS2/projects/cwcx-site/`
+- Source of truth on atlas2: `/home/atlas/src/cwcx-site/`
 
 ## Files
 
@@ -57,7 +57,7 @@ Content is limited on purpose. The landing page shows only the wordmark, the leg
 
 `terms.html` and `privacy.html` exist because Intuit's "unlock production credentials" form needs public EULA and privacy policy
 URLs for the Atlas Finance QuickBooks Online app. The questionnaire draft and the app URLs are in
-`/home/atlas/ATLAS2/projects/personal-finance/webapp/docs/INTUIT-PROD-KEYS.md`.
+`/home/atlas/src/atlas-finance/docs/INTUIT-PROD-KEYS.md`.
 
 > **Not legal advice.** Atlas drafted these pages from the app's documented behaviour. They have not been reviewed by a lawyer;
 > review by counsel is recommended before relying on them.
@@ -76,7 +76,7 @@ points to GitHub; otherwise the github.io URLs redirect to the GoDaddy parking p
 
 When Chris says the DNS is changed, Atlas runs on atlas2:
 ```sh
-cd /home/atlas/ATLAS2/projects/cwcx-site
+cd /home/atlas/src/cwcx-site
 ./publish-domain.sh --check      # DNS preflight only: four GitHub A records, www CNAME, Google MX still there
 ./publish-domain.sh              # merge cwcx-domain → main, secret scan, push via m3-dev, Pages cname=cwcx.com,
                                  # wait for the certificate, enforce HTTPS, curl-verify every page
@@ -91,7 +91,7 @@ then revert the merge on `main` and push. If `main` moves after `cwcx-domain` wa
 Edit the files here, commit, and ship via m3-dev. atlas2 has no GitHub login, so see the `github-publish` skill:
 
 ```sh
-cd /home/atlas/ATLAS2/projects/cwcx-site
+cd /home/atlas/src/cwcx-site
 git -c user.name=Atlas -c user.email=atlas@cwcx.com commit -am "…"   # run a secret scan of tree + history first
 git bundle create /tmp/cwcx-site.bundle --all && scp -q /tmp/cwcx-site.bundle m3-dev:/tmp/
 ssh m3-dev 'cd ~/src/cwcx-site && git pull -q /tmp/cwcx-site.bundle main && git push -q'
