@@ -30,16 +30,16 @@ This is the public website for **C Systems USA LLC** (DBA "C Systems"). It is a 
 
 ## Atlas Finance forwarders (`finance/`)
 
-Atlas Finance itself stays private on the C Systems tailnet (`https://atlas2.tail73b79a.ts.net:8448`). Intuit needs public
+Atlas Finance itself stays private on the C Systems tailnet (`https://vantage.cwcx.com`, the AWS host — a tailnet-only name — since the 2026-11 cutover; before that `https://atlas2.tail73b79a.ts.net:8448`). Intuit needs public
 URLs, so these static pages forward the browser there. They only work from a device on the C Systems tailnet; anyone else sees
 the page note and then a connection error.
 
 | Public URL (after DNS) | Forwards to |
 |---|---|
-| `https://cwcx.com/finance/` (Launch) | `https://atlas2.tail73b79a.ts.net:8448/quickbooks` |
-| `https://cwcx.com/finance/connect/` (Connect / Reconnect) | `…:8448/quickbooks?tab=connection` |
-| `https://cwcx.com/finance/disconnect/` (Disconnect) | `…:8448/qbo/disconnected` |
-| `https://cwcx.com/finance/qbo/callback` (OAuth redirect URI) | `…:8448/qbo/callback` + the query string unchanged (`code`, `state`, `realmId`, `error`) |
+| `https://cwcx.com/finance/` (Launch) | `https://vantage.cwcx.com/quickbooks` |
+| `https://cwcx.com/finance/connect/` (Connect / Reconnect) | `…/quickbooks?tab=connection` |
+| `https://cwcx.com/finance/disconnect/` (Disconnect) | `…/qbo/disconnected` |
+| `https://cwcx.com/finance/qbo/callback` (OAuth redirect URI) | `…/qbo/callback` + the query string unchanged (`code`, `state`, `realmId`, `error`) |
 
 Rules (enforced by `tools/gen-finance.py`): the target is a hard-coded constant, never read from the query (no open redirect);
 `location.replace` (the code does not stay in history); `noindex`, `no-referrer`; a meta CSP that allows only the page's own

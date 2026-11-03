@@ -17,7 +17,7 @@ import base64
 import hashlib
 import pathlib
 
-APP = "https://atlas2.tail73b79a.ts.net:8448"
+APP = "https://vantage.cwcx.com"
 NOTE = "This is a private C Systems application. It only opens on the C Systems private network."
 
 PAGES = [
